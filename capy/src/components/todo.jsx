@@ -13,15 +13,15 @@ const ConfirmationItem = ({ checkimg, checkedimg, text, onClick }) => {
   };
 
   return (
-    <div className="px-4 py-2 relative">
-      <div className="flex items-center  p-4 rounded-lg  w-156 h-1 ">
+    <div className="px-4 py-2 relative" style={{ marginLeft: "-18px"}}>
+      <div className="flex items-center  p-4 rounded-lg h-1 " style={{width:"300px"}}>
         <div className="flex-shrink-0 mr-4">
           <button className="focus:outline-none" onClick={handleClick}>
-            <img src={isClicked ? checkedimg : checkimg} alt="checkbox" className="w-8 h-8 object-contain" />
+            <img src={isClicked ? checkedimg : checkimg} alt="checkbox" className="w-5 h-6 object-contain" />
           </button>
         </div>
         <div className="flex-grow">
-          <span className="text-lg text-text_brown font-ntr">{text}</span>
+          <span className="text-lg text-text_brown font-ntr"style={{fontSize: "15px", marginLeft: "-8px"}}>{text}</span>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ const ToDoList = () => {
       <div className='text-lg text-tab_border_brown font-mitr 'style={{marginTop:"-20px", marginLeft:"20px"}}>
         David's To-Do's
       </div>
-      <div className="space-y-0.25 px-4 py-2">
+      <div className=" px-4 py-2" >
         {todos.map((todo) => (
           <ConfirmationItem
             checkimg={checkimg}

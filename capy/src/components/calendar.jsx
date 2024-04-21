@@ -23,8 +23,7 @@ const Calendar = () => {
       <div className='text-lg text-tab_border_brown font-mitr 'style={{marginTop:"-20px", marginLeft:"20px"}}>
         David's Calendar
       </div>
-      <br />
-      <h2 className='text-lg text-text_brown font-mitr ' style={{position: "fixed", left: "42%", fontSize:"15px"}}><strong>{getDate()}</strong></h2>
+      <h2 className='text-lg text-text_brown font-mitr ' style={{position: "fixed", left: "39%",top: "12%", fontSize:"15px"}}><strong>{getDate()}</strong></h2>
       {events.length === 0 ? (
         <p>No upcoming events found.</p>
       ) : (

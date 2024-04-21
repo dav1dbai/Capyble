@@ -12,6 +12,7 @@ from googleapiclient.errors import HttpError
 from flask import Flask,jsonify,request
 from flask_cors import CORS
 import json
+# from monitor import 
 
 app = Flask(__name__)
 app.app_context().push()
@@ -97,6 +98,14 @@ def receive_data():
         return jsonify({"status": "success", "message": "Data received"}), 200
     else:
         return jsonify({"status": "error", "message": "Request must be JSON"}), 400
+
+@app.route('/api/event-check', methods=['POST'])
+def handle_event_check():
+    data = request.get_json()
+    event_match = data['eventMatch']
+    # Here you can process the event match result or store it
+    return jsonify({'success': True, 'received': event_match})
+
 
 
 if __name__ == '__main__':

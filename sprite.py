@@ -31,11 +31,9 @@ def AppMode():
 
 if __name__ == '__main__':
     url = 'http://127.0.0.1:5000/sprites'
-    '''
     while(True):
         response = requests.post(url, json={'x':sprite.win.x, 'y': sprite.win.y})
         print(response)
         time.sleep(2)
-    ''' 
     AppMode()   
     wx_app.MainLoop()

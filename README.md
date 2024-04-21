@@ -1,2 +1,2 @@
 ![Hey it's Capy!!](Capyble.png)
-## With Capyble, you are capable.
+# With Capyble, you are CAPABLE💪

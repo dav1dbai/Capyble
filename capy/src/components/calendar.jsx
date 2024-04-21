@@ -36,7 +36,7 @@ const Calendar = () => {
       </div>
       <h2 className='text-lg text-text_brown font-mitr ' style={{position: "fixed", left: "37%",top: "12%", fontSize:"15px"}}><strong>{currentDate.toLocaleDateString()}</strong></h2>
       {events.length === 0 ? (
-        <p>No upcoming events found.</p>
+        <p className='text-lg text-tab_border_brown font-ntr ' style={{position: "fixed", left: "17%",top: "20%"}}> No upcoming events found.</p>
       ) : (
 
         <ul>

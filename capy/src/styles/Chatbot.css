@@ -27,7 +27,7 @@
     padding: 8px;
     margin-top: -5px;
     margin-bottom: -12px;
-    border-color: #BF8148;
+    color: #BF8148;
   }
   
   .user-message {
@@ -38,6 +38,8 @@
   .bot-message {
     background-color: #F8DEC1;
     text-align: left;
+    color: #BF8148;
+
   }
   
   .chatbot-input {

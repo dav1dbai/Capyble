@@ -6,7 +6,7 @@ import Chatbot from './components/Chatbot'
 import Calendar from './components/calendar'
 import Navigation from './components/navigation';
 
-import checkedimg from './assets/mini_capy.png'
+import checkedimg from './assets/mini_capy_right.png'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);

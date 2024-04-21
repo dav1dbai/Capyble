@@ -31,11 +31,15 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="chatbot-header">
-        <h2>Chatbot</h2>
+    
+    <div className="chatbot-container " >
+
+      <div className="chatbot-header text-tab_border_brown font-mitr " >
+      <style>{'body { background-color: #F8DEC1; }'}</style>
+
+        <h2 style={{marginTop:"-40px", marginLeft:"-130px"}}>Chat with Capy</h2>
       </div>
-      <div className="chatbot-conversation">
+      <div className="chatbot-conversation text-text_brown font-ntr">
         {conversation.map((msg, index) => (
           <div
             key={index}
@@ -45,11 +49,12 @@ const Chatbot = () => {
           </div>
         ))}
       </div>
-      <div className="chatbot-input">
+      <div className="chatbot-input text-text_brown font-mitr" >
         <input
           type="text"
           value={message}
           onChange={handleInputChange}
+          style={{ backgroundColor: "#F8DEC1" , color: "#6D4520", marginRight: "-30px", borderColor:"#6D4520", borderWidth:"2px"}}
           placeholder="Type your message..."
         />
         <button onClick={handleSendMessage}>Send</button>

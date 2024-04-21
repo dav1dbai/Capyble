@@ -3,6 +3,9 @@ import wx.adv
 import math
 import random
 import time
+import requests
+
+global url
 
 global app
 
@@ -13,7 +16,6 @@ def mainLoop():
     app.MainLoop()
 
 # class TextPanel(wx.Frame):
-global app
 
 def createApp():
     app = wx.App()
@@ -60,16 +62,19 @@ class Sprite(wx.Frame):
     
         self.text = "hello!"
         self.panel = TextPanel(self,self.text)
-        self.panel.Show()
+        # self.panel.Show()
 
         #gif translation
         self.frame = 0
         self.max_frame = 7
         self.updateImage("standing")
+        self.clicked = False
     
         #positions
         self.win = self.GetScreenPosition()
         self.screen_size = wx.DisplaySize()[0]
+
+        self.MoveOrigin()
 
         #event bindings
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -128,9 +133,14 @@ class Sprite(wx.Frame):
     def OnExit(self, evt):
         self.Close()
 
-    #def MoveOrigin(self):
+    def MoveOrigin(self):
+        self.Move(70,900)
     
     def OnMouseMove(self, evt):
+        if evt.LeftIsDown() and not self.clicked:
+            url = 'http://127.0.0.1:5000/sprites'
+            requests.post(url,json={'event': 'open'})
+            self.clicked = True
         if evt.Dragging() and evt.LeftIsDown():
             pos = self.ClientToScreen(evt.GetPosition())
             newPos = (pos.x - self.delta.x, pos.y - self.delta.y)
@@ -141,11 +151,12 @@ class Sprite(wx.Frame):
         self.win = self.GetScreenPosition()
 
     def traverse(self, coords, duration):
+        self.clicked = False
         self.updateCoords()
         dest_x = coords[0]
         dest_y = coords[1]
         dx = dest_x - self.win.x
-        dy = dest_y - self.win.y
+        dy = dest_y - self.win.y - 20
 
         distance = math.sqrt(dx ** 2 + dy ** 2)
         
@@ -178,14 +189,16 @@ class Sprite(wx.Frame):
         wx.GetApp().Yield()
 
     def jump(self):
+        self.clicked = False
         time.sleep(0.5)
         for i in range(5):
             self.updateImage('standing')
             wx.GetApp().Yield()
             time.sleep(0.5)
             self.updateImage('jumping')
+            self.Move(wx.Point(self.win.x,self.win.y-20))
             wx.GetApp().Yield()
-            
+            self.Move(wx.Point(self.win.x,self.win.y+20))
             print("jumping")
             time.sleep(0.5)
         self.updateImage('standing')

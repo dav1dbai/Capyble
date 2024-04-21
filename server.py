@@ -27,6 +27,7 @@ supabase: Client = create_client(url, key)
 #TODO: remove api keys
 
 # def spriteIdle():
+toggle_state = False
 
 def initializeCal():
     global service
@@ -88,15 +89,25 @@ def get_events():
 
 @app.route('/sprites', methods=['POST','GET'])
 def receive_data():
-    if request.is_json:
-        data = request.get_json()
-        print("Data received:", data)
-        # Assuming you want to store the data for the React component to fetch
-        with open('data.json', 'w') as f:
-            json.dump(data, f)
-        return jsonify({"status": "success", "message": "Data received"}), 200
-    else:
-        return jsonify({"status": "error", "message": "Request must be JSON"}), 400
+    global toggle_state  # Reference the global variable
+
+    if request.method == 'POST':
+        if request.is_json:
+            data = request.get_json()
+            print("Data received:", data)
+            
+            # Update the toggle state based on the received data
+            # Assuming the data contains a 'toggle' field that indicates the desired state
+            toggle_state = data.get('event', toggle_state)
+
+            # Return the current state of the toggle
+            return jsonify({"toggle_state": toggle_state}), 200
+        else:
+            return jsonify({"status": "error", "message": "Request must be JSON"}), 400
+
+    elif request.method == 'GET':
+        # Return the current state of the toggle
+        return jsonify({"toggle_state": toggle_state}), 200
 
 
 if __name__ == '__main__':

@@ -2,6 +2,8 @@ import datetime
 import os.path
 
 #file written by way, arp 20 2024
+#reference https://developers.google.com/calendar/api/guides/overview
+
 #deplaying the next 10 items, add and delete eventsn (noticing its deleted by ID at this moment and may need to figure out some logics in futrue)
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials

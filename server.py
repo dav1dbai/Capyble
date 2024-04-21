@@ -12,6 +12,7 @@ from googleapiclient.errors import HttpError
 from flask import Flask,jsonify,request
 from flask_cors import CORS
 import json
+import requests
 # from monitor import 
 
 app = Flask(__name__)
@@ -112,10 +113,66 @@ def receive_data():
 
 @app.route('/api/event-check', methods=['POST'])
 def handle_event_check():
+    print("received")
     data = request.get_json()
     event_match = data['eventMatch']
     # Here you can process the event match result or store it
-    return jsonify({'success': True, 'received': event_match})
+    print(data)
+    return jsonify(data)
+
+api_key = 'sk-proj-3B52aX1AMDyogcDtp6O6T3BlbkFJwgIcRCyWt7yWkNSWhZJZ'
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        # Get the message from the request JSON
+        message = request.json['message']
+        print(message)
+
+        # Define the OpenAI API URL
+        url = "https://api.openai.com/v1/chat/completions"
+
+        # Set up the headers with the API key and the model you want to use
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
+
+        # Prepare the data payload
+        payload = {
+            "model": 'gpt-3.5-turbo',
+            #"prompt": f"{message}\nAI:",
+            "messages": [
+                {"role": "user", "content": message}
+            ],
+            #"max_tokens": 150,
+            "temperature": 0.5  # Adjust temperature for generating diverse responses
+        }
+
+        # Make the POST request to the OpenAI API
+        response = requests.post(url, headers=headers, json=payload)
+        print(response.json())
+        # print(response.json()['choices'][0]['message']['content'])
+
+        try:
+            return response.json()['choices'][0]['message']['content']
+        except KeyError:
+            return "Error or no response"
+        
+        # Check for errors
+        '''if response.status_code == 200:
+            # Extract the response from the API
+            
+            return response.json
+        else:
+            # If there's an error, return an error message
+            return jsonify({"response": "Failed to call OpenAI API."}), 500'''
+
+    except Exception as e:
+        # Print the exception error message to the console
+        print(f"An error occurred: {str(e)}")
+        # Return an error response
+        return jsonify({"response": "An error occurred."}), 500
 
 
 

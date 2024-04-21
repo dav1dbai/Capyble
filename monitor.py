@@ -99,7 +99,7 @@ def check(service):
     #https://ai.google.dev/gemini-api/docs/get-started/python 
 
 def post_result_to_server(is_event_match):
-    url = 'http://localhost:5000/api/event-check'  # Adjust the URL based on your actual server configuration
+    url = 'http://127.0.0.1:5000/api/event-check'  # Adjust the URL based on your actual server configuration
     data = {'eventMatch': is_event_match}
     try:
         response = requests.post(url, json=data)
@@ -119,9 +119,9 @@ def main():
         if (is_event_happening_now(service)):
             print("hello")
             if (not check(service)):
-                post_result_to_server("no")
+                print(post_result_to_server("no"))
             else:
-                post_result_to_server("yes")
+                print(post_result_to_server("yes"))
         time.sleep(300) #check every 5 minuts
 
     '''

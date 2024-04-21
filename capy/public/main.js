@@ -19,7 +19,7 @@ function createWindow() {
         icon: path.join(__dirname,'capylogo.icns')
     });
 
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     //win.loadFile(path.join(__dirname, '../src/index.html'));
     // Or if you use a dev server:
     win.loadURL('http://localhost:3000');

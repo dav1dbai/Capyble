@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Todo from './components/todo'
@@ -15,7 +15,23 @@ function App() {
     window.api.send('toggleWindow');
   };
 
-  window.api.send('toMain', 'some data');
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const response = await fetch('http://127.0.0.1:5000/sprites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({request: "fetch"})  // Dummy payload if needed
+    });
+    const data = await response.json();
+    console.log(data)
+  };
+
+  //window.api.send('toMain', 'some data');
 
   return (
     <Router>

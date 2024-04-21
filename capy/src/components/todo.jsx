@@ -54,10 +54,11 @@ const ToDoList = () => {
 
   return (
     <div>
-      <div className='text-lg text-tab_border_brown font-mitr '>
+      <style>{'body { background-color: #F8DEC1; }'}</style>
+      <div className='text-lg text-tab_border_brown font-mitr 'style={{marginTop:"-20px", marginLeft:"20px"}}>
         David's To-Do's
       </div>
-      <div className="space-y-4 px-4 py-2">
+      <div className="space-y-0.25 px-4 py-2">
         {todos.map((todo) => (
           <ConfirmationItem
             checkimg={checkimg}

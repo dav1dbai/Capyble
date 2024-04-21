@@ -40,21 +40,21 @@ ipcMain.on('toMain', (event, data) => {
     console.log('Received data from renderer:', data);
 });
 
-ipcMain.on('toggleWindow', () => {
+ipcMain.on('toggleWindow', (event, command) => {
     if (!win) return;
 
     const screenWidth = screen.getPrimaryDisplay().bounds.width;
     const windowHeight = screen.getPrimaryDisplay().bounds.height;  // Define window height for easy reference
 
-    // Toggle logic based on the state variable
-    if (isFullyVisible) {
-        // Make only an eighth visible
-        win.setBounds({ x: screenWidth - 50, y: parseInt(windowHeight/2)});
-        isFullyVisible = false;  // Update the state variable
-    } else {
+    if (command === 'open') {
         // Make the window fully visible
-        win.setBounds({ x: screenWidth - 300, y: parseInt(windowHeight/2) });
-        isFullyVisible = true;  // Update the state variable
+        win.setBounds({ x: screenWidth - 300, y: parseInt(windowHeight / 2), width: 300, height: 300 });
+        win.show(); // Ensure the window is shown in case it was hidden
+    } else if (command === 'close') {
+        // Hide a part of the window, making only an eighth visible
+        win.setBounds({ x: screenWidth - 50, y: parseInt(windowHeight / 2), width: 50, height: 300 });
+        // Optionally, you could hide the window entirely instead:
+        // win.hide();
     }
 });
 

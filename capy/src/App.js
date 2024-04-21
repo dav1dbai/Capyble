@@ -1,5 +1,5 @@
-import {React, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {React, useEffect, useState} from 'react';
+import { BrowserRouter as Router, Route, Routes, json } from 'react-router-dom';
 
 import Todo from './components/todo'
 import Chatbot from './components/Chatbot'
@@ -9,27 +9,44 @@ import Navigation from './components/navigation';
 import checkedimg from './assets/mini_capy_right.png'
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Function to handle toggle, it sends a command to the window API and updates the state
   const handleToggleWindow = () => {
-    // Accessing the exposed API in renderer process
-    console.log("pressed");
-    window.api.send('toggleWindow');
+    const newIsOpen = !isOpen;  // Calculate the new state as the opposite of the current state
+    const command = newIsOpen ? 'open' : 'close';  // Determine command based on the new state
+
+    window.api.send('toggleWindow', command);  // Send the command to Electron's main process
+    setIsOpen(newIsOpen);  // Update the component's state to the new state
   };
+
+  /*
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/sprites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({request: "fetch"})  // Dummy payload for fetching current state
+      });
+      const jsonData = await response.json();
+      console.log(jsonData.toggle_state)
+      setIsOpen(jsonData.toggle_state);  // Update the local state with the fetched state
+      window.api.send('toggleWindow', isOpen);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  };
+  */
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    //const intervalId = setInterval(fetchData, 500);  // Set up the interval to fetch data every 500ms
 
-  const fetchData = async () => {
-    const response = await fetch('http://127.0.0.1:5000/sprites', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({request: "fetch"})  // Dummy payload if needed
-    });
-    const data = await response.json();
-    console.log(data)
-  };
+    return () => {
+      //clearInterval(intervalId);  // Clear the interval when the component unmounts
+    };
+  }, []);
 
   //window.api.send('toMain', 'some data');
 

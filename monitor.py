@@ -3,7 +3,7 @@ import pyautogui
 import pathlib
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
-from datetime import datetime, timezone
+from datetime import datetime, timezone,timedelta
 import textwrap
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -11,7 +11,10 @@ from IPython.display import display
 from IPython.display import Markdown
 import PIL.Image
 import time
+import requests
 import pytz
+import re
+
 
 #need to first run quickstart and then monitor would work. check why this happens.
 #need to do with the frontend
@@ -21,6 +24,7 @@ import pytz
 load_dotenv()
 GOOGLE_API_KEY= os.getenv('GEMINI_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
+
 '''
 for m in genai.list_models():
   if 'generateContent' in m.supported_generation_methods:
@@ -56,9 +60,9 @@ def is_event_happening_now(service):
     local_timezone = pytz.timezone('America/Los_Angeles')
     local_now = utc_now.replace(tzinfo=pytz.utc).astimezone(local_timezone)
 
-    print(local_now)
     # Get the current and next events
-    events_result = service.events().list(calendarId='primary', timeMin=now,
+   
+    events_result = service.events().list(calendarId='primary', timeMin=(utc_now-timedelta(minutes=30)).isoformat() + 'Z',
                                           maxResults=1, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
@@ -75,7 +79,7 @@ def is_event_happening_now(service):
   
 def contains_no(phrase):
     # \b around 'no' defines a word boundary, ensuring 'no' is a complete word
-    return bool(re.search(r'\bno\b', phrase, re.IGNORECASE))
+    return bool(re.search(r'\bno\b', phrase[:5], re.IGNORECASE))
 
 def check(service):
     # Take a screenshot
@@ -89,30 +93,36 @@ def check(service):
     # ask gemini if this is the same event
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content([prompt,img])
-    return (contains_no(phrase))
+    #print("text"+response.text)
+    #print(contains_no(response.text))
+    return (contains_no(response.text))
     #https://ai.google.dev/gemini-api/docs/get-started/python 
 
-
+def post_result_to_server(is_event_match):
+    url = 'http://localhost:5000/api/event-check'  # Adjust the URL based on your actual server configuration
+    data = {'eventMatch': is_event_match}
+    try:
+        response = requests.post(url, json=data)
+        response.raise_for_status()  # Raises an error for bad responses
+        return response.json()  # Returns the response from the server if needed
+    except requests.RequestException as e:
+        print(f"Failed to send data to server: {e}")
+        return None
+    
 def main():
     # Setup Google Calendar API
     creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar.readonly'])
     service = build('calendar', 'v3', credentials=creds)
-
-
     #about to write some logics in checking servise 
     #1 when there is an event going on, during the strat and the end time, check every 5 minutes
     while True:
-      if (is_event_happening_now(service)):
-          time.sleep(300)
-          #print(is_event_happening_now(service))
-          if (not check(service)):
-            #post a thing to change the frontend
-            #TO DO
+        if (is_event_happening_now(service)):
+            print("hello")
+            if (not check(service)):
+                post_result_to_server("no")
             else:
-              #happy Cappy
-          time.sleep(300) #check every 5 minuts
-
-
+                post_result_to_server("yes")
+        time.sleep(300) #check every 5 minuts
 
     '''
     #testing gemini-pro(text only)
@@ -120,9 +130,8 @@ def main():
     response = model.generate_content("What is the meaning of life?")
     print(response.text)
     '''
-
    
-    
-
 if __name__ == '__main__':
-    main()
+    main_result = main()
+    server_response = post_result_to_server(main_result)
+    print(server_response)  # Optionally print the server's response

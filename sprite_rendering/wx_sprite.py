@@ -25,7 +25,7 @@ class TextPanel(wx.Frame):
     def __init__(self, parent, text):
         wx.Frame.__init__(self, parent, title="Text Panel", style=wx.FRAME_FLOAT_ON_PARENT | wx.STAY_ON_TOP)
 
-        # self.SetBackgroundColour(wx.WHITE)
+        self.SetBackgroundColour("#F8D6AE")
 
         # Create a static text control to display the text
         self.static_text = wx.StaticText(self, label=text)
@@ -53,7 +53,7 @@ class Sprite(wx.Frame):
     
         self.text = "hello!jnfjenfejwfnejwfn\njewfnjewfnewj\nfnewjfnewjfnewjfnewjfn\nwejnfjewnf"
         self.panel = TextPanel(self,self.text)
-        # self.panel.Show()
+        self.panel.Show()
 
         #gif translation
         self.frame = 0
@@ -83,7 +83,10 @@ class Sprite(wx.Frame):
             "sitleft" : "./assets/sitleft.png",
             "sitright" : "./assets/sitleft.png",
             "standing" : "./assets/capystand.png",
-            "jumping" : "./assets/capyjump.png"
+            "jumping" : "./assets/capyjump.png",
+            "walk0" : "./assets/0.png",
+            "walk1" : "./assets/1.png",
+            "walk2" : "./assets/2.png",
         }
         self.imgpath = pose_dict[pose]
         image = wx.Image(self.imgpath)          
@@ -137,11 +140,6 @@ class Sprite(wx.Frame):
         dx = dest_x - self.win.x
         dy = dest_y - self.win.y
 
-        if dx < 0:
-            self.updateImage("sitleft")
-        else:
-            self.updateImage("sitright")
-
         distance = math.sqrt(dx ** 2 + dy ** 2)
         
         if distance != 0:
@@ -151,14 +149,21 @@ class Sprite(wx.Frame):
             dx_unit, dy_unit = 0, 0
         
         steps = int(distance)
+        cycle_length = 3
+        steps_per_image = max(1, steps // (3 * cycle_length))  # Define how many steps per image change, adjusted for short distances
+        
         for step in range(steps):
             # Calculate the new position based on the step along the trajectory
             x = self.win.x + int(step * dx_unit)
             y = self.win.y + int(step * dy_unit)
             
+            # Update image according to the walk cycle
+            current_image = rf"walk{(step // steps_per_image) % 3}"
+            self.updateImage(current_image)
+            
             self.panel.Move(wx.Point(x, y))
             self.Move(wx.Point(x, y + self.panel.GetSize()[1]))
-            wx.GetApp().Yield()
-            time.sleep(duration / steps)
+            wx.GetApp().Yield()  # Allow other events to be processed
+            time.sleep(duration / steps)  # Pause to create the illusion of animation
+            
         self.updateImage("standing")
-

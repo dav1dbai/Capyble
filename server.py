@@ -9,8 +9,9 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 app.app_context().push()
@@ -85,6 +86,17 @@ def get_events():
         print(f"An error occurred: {error}")
         return jsonify([])
 
+@app.route('/sprites', methods=['POST','GET'])
+def receive_data():
+    if request.is_json:
+        data = request.get_json()
+        print("Data received:", data)
+        # Assuming you want to store the data for the React component to fetch
+        with open('data.json', 'w') as f:
+            json.dump(data, f)
+        return jsonify({"status": "success", "message": "Data received"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Request must be JSON"}), 400
 
 
 if __name__ == '__main__':

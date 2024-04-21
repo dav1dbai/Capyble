@@ -26,20 +26,27 @@ class TextPanel(wx.Frame):
         wx.Frame.__init__(self, parent, title="Text Panel", style=wx.FRAME_FLOAT_ON_PARENT | wx.STAY_ON_TOP)
 
         self.SetBackgroundColour("#F8D6AE")
-
+        self.SetForegroundColour(wx.BLACK)
         # Create a static text control to display the text
         self.static_text = wx.StaticText(self, label=text)
         self.button = wx.Button(self)
         self.textinput = wx.TextCtrl(self,size = (self.static_text.GetSize()[0],25))
+        self.Bind(wx.EVT_BUTTON, self.onSubmit, self.button)
+        self.Bind(wx.EVT_TEXT_ENTER, self.onSubmit, self.textinput)
         # Set up sizer to arrange the controls
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.static_text, 0, wx.ALL, border=5)  # Add some padding
-        sizer.Add(self.button, 0, wx.ALL, border=5) 
         sizer.Add(self.textinput, 0, wx.ALL, border=5) 
+        sizer.Add(self.button, 0, wx.ALL, border=5) 
         self.SetSizer(sizer)
 
         # Fit the frame to the size of the static text
         sizer.Fit(self)
+
+    def onSubmit(self, event):
+            user_input = self.textinput.GetValue()
+            print("User Input:", user_input)
+
 
 
 class Sprite(wx.Frame):
@@ -51,7 +58,7 @@ class Sprite(wx.Frame):
         #movement
         self.delta = wx.Point(0,0)
     
-        self.text = "hello!jnfjenfejwfnejwfn\njewfnjewfnewj\nfnewjfnewjfnewjfnewjfn\nwejnfjewnf"
+        self.text = "hello!"
         self.panel = TextPanel(self,self.text)
         self.panel.Show()
 
@@ -150,7 +157,7 @@ class Sprite(wx.Frame):
         
         steps = int(distance)
         cycle_length = 3
-        steps_per_image = max(1, steps // (3 * cycle_length))  # Define how many steps per image change, adjusted for short distances
+        steps_per_image = 5  # Define how many steps per image change, adjusted for short distances
         
         for step in range(steps):
             # Calculate the new position based on the step along the trajectory
@@ -165,5 +172,21 @@ class Sprite(wx.Frame):
             self.Move(wx.Point(x, y + self.panel.GetSize()[1]))
             wx.GetApp().Yield()  # Allow other events to be processed
             time.sleep(duration / steps)  # Pause to create the illusion of animation
+        self.updateCoords()
+        self.panel.Move(wx.Point(self.win.x, self.win.y))    
+        self.updateImage("walk1")
+        wx.GetApp().Yield()
+
+    def jump(self):
+        time.sleep(0.5)
+        for i in range(5):
+            self.updateImage('standing')
+            wx.GetApp().Yield()
+            time.sleep(0.5)
+            self.updateImage('jumping')
+            wx.GetApp().Yield()
             
-        self.updateImage("standing")
+            print("jumping")
+            time.sleep(0.5)
+        self.updateImage('standing')
+        wx.GetApp().Yield()

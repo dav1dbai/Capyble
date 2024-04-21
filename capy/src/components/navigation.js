@@ -11,10 +11,10 @@ function Navigation() {
     <nav className="flex justify-end">
       <ul className="flex space-x-4">
         <li>
-          <Link to="/chat">
+          <Link to="/">
             <img
               src={chat}
-              className={`h-6 w-6 ${location.pathname === '/chat' ? 'border-2 border-borderbrown-600 rounded-lg' : ''}`}
+              className={`h-6 w-6 ${location.pathname === '/' ? 'border-2 border-borderbrown-600 rounded-lg' : ''}`}
               alt="Chat"
             />
           </Link>

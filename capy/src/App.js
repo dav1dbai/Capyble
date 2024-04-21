@@ -6,7 +6,7 @@ import Chatbot from './components/Chatbot'
 import Calendar from './components/calendar'
 import Navigation from './components/navigation';
 
-import checkedimg from './assets/checked.png'
+import checkedimg from './assets/mini_capy.png'
 
 function App() {
   const handleToggleWindow = () => {
@@ -25,13 +25,13 @@ function App() {
           onClick={handleToggleWindow}
           style={{
             position: 'fixed',
-            left: '5%',
-            top: '50%',
+            left: '10%',
+            top: '90%',
             transform: 'translate(-50%, -50%)',
             zIndex: 100,
           }}
         >
-          <img src={checkedimg} className='w-8 h-8'/>
+          <img src={checkedimg} className='w-16 h-16'/>
         </button>
         <Routes>
           <Route path="/todo" element={<Todo/>} />

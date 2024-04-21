@@ -111,4 +111,3 @@ def handle_event_check():
 if __name__ == '__main__':
     initializeCal()
     app.run()
-    #sprite.jump()

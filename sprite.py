@@ -35,5 +35,7 @@ if __name__ == '__main__':
         response = requests.post(url, json={'x':sprite.win.x, 'y': sprite.win.y})
         print(response)
         time.sleep(2)
+    
     AppMode()   
+    sprite.jump()
     wx_app.MainLoop()

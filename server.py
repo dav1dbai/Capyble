@@ -102,4 +102,3 @@ def receive_data():
 if __name__ == '__main__':
     initializeCal()
     app.run()
-    #sprite.jump()

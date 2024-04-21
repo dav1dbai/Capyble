@@ -34,12 +34,12 @@ const Calendar = () => {
       <div className='text-lg text-tab_border_brown font-mitr 'style={{marginTop:"-20px", marginLeft:"20px"}}>
         David's Calendar
       </div>
-      <h2 className='text-lg text-text_brown font-mitr ' style={{position: "fixed", left: "37%",top: "12%", fontSize:"15px"}}><strong>{currentDate.toLocaleDateString()}</strong></h2>
+      <h2 className='text-lg text-text_brown font-mitr ' style={{position: "relative", left: "37%",top: "12%", fontSize:"15px" }}><strong>{currentDate.toLocaleDateString()}</strong></h2>
       {events.length === 0 ? (
-        <p className='text-lg text-tab_border_brown font-ntr ' style={{position: "fixed", left: "17%",top: "20%"}}> No upcoming events found.</p>
+        <p className='text-lg text-tab_border_brown font-ntr ' style={{position: "relative", left: "17%",top: "20%"}}> No upcoming events found.</p>
       ) : (
 
-        <ul>
+        <ul >
           <br />
           {events.map((event) => (
             <li key={event.id}>
@@ -47,9 +47,9 @@ const Calendar = () => {
               <br />
               
               {/* if from calendar, use text-tab_border_brown; otherwise use green */}
-              <div className='text-lg text-tab_border_brown font-ntr ' style={{marginTop:"-10px"}} >
-              <span style={{position: "fixed", right: "58%"}}> {formatDate(event.start).substr(18, 20)} </span> 
-              <span style={{position: "fixed", left: "50%"}}>{event.summary}</span>   
+              <div className='text-lg text-tab_border_brown font-ntr ' style={{marginTop:"-45px"}} >
+              <span style={{position: "relative", right: "-60px"}}> {formatDate(event.start).substr(18, 20)} </span> 
+              <span style={{position: "relative", left: "70px"}}>{event.summary}</span>   
               </div>
               
               <br />

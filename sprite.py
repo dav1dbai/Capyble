@@ -4,6 +4,7 @@ import wx
 import random
 import datetime
 import requests
+import time
 
 url: str = "https://kjrtaohycygzmncqlffw.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqcnRhb2h5Y3lnem1uY3FsZmZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM2MDc5OTQsImV4cCI6MjAyOTE4Mzk5NH0.2lsH0yuwL6-puxJl-YULVzaaHfHtMRvD__xait4iKto"
@@ -29,4 +30,12 @@ def AppMode():
     moveSpriteToApp(dest['app_name'])
 
 if __name__ == '__main__':
+    url = 'http://127.0.0.1:5000/sprites'
+    '''
+    while(True):
+        response = requests.post(url, json={'x':sprite.win.x, 'y': sprite.win.y})
+        print(response)
+        time.sleep(2)
+    ''' 
+    AppMode()   
     wx_app.MainLoop()

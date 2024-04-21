@@ -150,6 +150,19 @@ def chat():
         '''
 
         message = promptB + request.json['message']
+
+        # Retrieve the upcoming events
+        upcoming_events_response = get_events()
+        '''if not isinstance(upcoming_events_response, list):
+            print("upcoming_events_response is not a list")
+            return jsonify({"response": "Failed to retrieve events."}), 500'''
+
+        # Add the upcoming events context to the message
+        context_message = "Here are your upcoming events:\n"
+        for event in upcoming_events_response.json:
+            context_message += f"- {event['summary']} (Start: {event['start']}, End: {event['end']})\n"
+        context_message += "\n"
+        message = context_message + message
         
         print(message)
 

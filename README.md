@@ -1,1 +1,1 @@
-![Hey it's Capy!!](../Capyble/capy/src/assets/Capyble.png)
+![Hey it's Capy!!](Capyble.png)

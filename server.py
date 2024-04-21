@@ -126,7 +126,7 @@ def handle_event_check():
         )
     return jsonify(data)
 
-api_key = ''
+api_key = os.getenv('OPENAI_API_KEY')
 
 @app.route('/chat', methods=['POST'])
 def chat():

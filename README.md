@@ -1,4 +1,5 @@
-![Hey it's Capy!!](Capyble.png)
+<img src="Capyble.png" width="200">
+
 # With Capyble, you are CAPABLE💪
 
 

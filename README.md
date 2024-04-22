@@ -44,4 +44,4 @@ We plan to enhance our capybara's design and user experience, making it not only
 ## Try It Out
 
 - [Interactive Design Mockup on Figma](https://www.figma.com/proto/0INER6v5kKAF8AVXlJuGaH/Capy?type=design&node-id=5-172&t=L3k4gcmnshkwqy7K-0&scaling=min-zoom&page-id=2%3A164&starting-point-node-id=5%3A172)
-- [GitHub Repository]([https://github.com/your-username/your-repository](https://youtu.be/wMT5xClvbP8))
+- [Demo on Youtube](https://youtu.be/wMT5xClvbP8)
